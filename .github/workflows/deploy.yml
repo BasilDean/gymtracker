@@ -101,5 +101,5 @@ jobs:
       - name: Deploy to production server
         run: |
           rsync -avz --delete-after \
-            -e "ssh -o StrictHostKeyChecking=no" \
+            -e "ssh -p 21098 -o StrictHostKeyChecking=no" \
             ./ dandpjoh@198.54.115.43:/gta.dandelions.website
