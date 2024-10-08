@@ -37,7 +37,7 @@ jobs:
 
       - name: Generate application key
         id: generate_key
-        run: php artisan key:generate --show
+        run: echo "APP_KEY=$(php artisan key:generate --show)" >> $GITHUB_ENV
         env:
           APP_ENV: testing
 
