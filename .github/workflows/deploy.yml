@@ -100,6 +100,25 @@ jobs:
 
       - name: Deploy to production server
         run: |
-          rsync -avz --delete-after \
-            -e "ssh -p 21098 -o StrictHostKeyChecking=no" \
-            ./ dandpjoh@198.54.115.43:/gta.dandelions.website
+          ssh -p 21098 -o StrictHostKeyChecking=no dandpjoh@198.54.115.43 << 'EOF'
+            cd /gta.dandelions.website || git clone git@github.com:BasilDean/gymtracker.git /gta.dandelions.website
+            cd /gta.dandelions.website
+            git pull origin main
+            composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
+            npm install
+            npm run build
+            if [ ! -f .env ]; then
+              cp .env.example .env
+              php artisan key:generate
+            fi
+            php artisan migrate --force
+            php artisan db:seed --force
+          EOF
+        env:
+          APP_ENV: production
+          DB_CONNECTION: mysql
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
+          DB_DATABASE: ${{ secrets.DB_DATABASE }}
+          DB_USERNAME: ${{ secrets.DB_USERNAME }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
