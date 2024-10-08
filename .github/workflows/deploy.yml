@@ -101,7 +101,7 @@ jobs:
 
       - name: Verify SSH Key
         run: |
-          ssh-keygen -y -f ${{ secrets.SSH_PRIVATE_KEY }}
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" | ssh-keygen -y -f /dev/stdin
 
       - name: Debug SSH Connection
         run: |
