@@ -37,12 +37,11 @@ jobs:
 
       - name: Generate application key
         id: generate_key
-        run: echo "APP_KEY=$(php artisan key:generate --show)" >> $GITHUB_ENV
+        run: |
+          key=$(php artisan key:generate --show)
+          echo "APP_KEY=$key" >> $GITHUB_ENV
         env:
           APP_ENV: testing
-
-      - name: Set APP_KEY
-        run: echo "APP_KEY=${{ steps.generate_key.outputs.key }}" >> $GITHUB_ENV
 
       - name: Run migrations
         run: php artisan migrate --force
@@ -54,7 +53,7 @@ jobs:
           DB_USERNAME: root
           DB_PASSWORD: root
           APP_ENV: testing
-          APP_KEY: ${{ steps.generate_key.outputs.key }}
+          APP_KEY: ${{ env.APP_KEY }}
 
       - name: Run tests
         run: ./vendor/bin/pest
@@ -66,7 +65,7 @@ jobs:
           DB_USERNAME: root
           DB_PASSWORD: root
           APP_ENV: testing
-          APP_KEY: ${{ steps.generate_key.outputs.key }}
+          APP_KEY: ${{ env.APP_KEY }}
 
   deploy:
     runs-on: ubuntu-latest
