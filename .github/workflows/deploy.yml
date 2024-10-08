@@ -36,10 +36,13 @@ jobs:
         run: composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
 
       - name: Generate application key
-        run: php artisan key:generate
+        id: generate_key
+        run: php artisan key:generate --show
         env:
           APP_ENV: testing
-          APP_KEY: base64:YOUR_GENERATED_KEY_HERE
+
+      - name: Set APP_KEY
+        run: echo "APP_KEY=${{ steps.generate_key.outputs.key }}" >> $GITHUB_ENV
 
       - name: Run migrations
         run: php artisan migrate --force
@@ -50,6 +53,8 @@ jobs:
           DB_DATABASE: test_database
           DB_USERNAME: root
           DB_PASSWORD: root
+          APP_ENV: testing
+          APP_KEY: ${{ steps.generate_key.outputs.key }}
 
       - name: Run tests
         run: ./vendor/bin/pest
@@ -61,7 +66,7 @@ jobs:
           DB_USERNAME: root
           DB_PASSWORD: root
           APP_ENV: testing
-          APP_KEY: base64:YOUR_GENERATED_KEY_HERE
+          APP_KEY: ${{ steps.generate_key.outputs.key }}
 
   deploy:
     runs-on: ubuntu-latest
