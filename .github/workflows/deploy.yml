@@ -100,6 +100,7 @@ jobs:
 
       - name: Debug SSH Connection
         run: |
+          ssh-add -l
           ssh -v -p 21098 -o StrictHostKeyChecking=no dandpjoh@198.54.115.43 "echo 'SSH connection successful'"
         env:
           APP_ENV: production
@@ -114,7 +115,7 @@ jobs:
         run: |
           ssh -p 21098 -o StrictHostKeyChecking=no dandpjoh@198.54.115.43 << 'EOF'
             cd /home/dandpjoh/gta.dandelions.website || git clone git@github.com:BasilDean/gymtracker.git /home/dandpjoh/gta.dandelions.website
-            cd /home/dandpjoh/gta.dandelions.website/
+            cd /home/dandpjoh/gta.dandelions.website
             git pull origin main
             composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
             npm install
