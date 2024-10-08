@@ -98,6 +98,18 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
+      - name: Debug SSH Connection
+        run: |
+          ssh -v -p 21098 -o StrictHostKeyChecking=no dandpjoh@198.54.115.43 "echo 'SSH connection successful'"
+        env:
+          APP_ENV: production
+          DB_CONNECTION: mysql
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
+          DB_DATABASE: ${{ secrets.DB_DATABASE }}
+          DB_USERNAME: ${{ secrets.DB_USERNAME }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+
       - name: Deploy to production server
         run: |
           ssh -p 21098 -o StrictHostKeyChecking=no dandpjoh@198.54.115.43 << 'EOF'
