@@ -98,6 +98,11 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
+
+      - name: Verify SSH Key
+        run: |
+          ssh-keygen -y -f ${{ secrets.SSH_PRIVATE_KEY }}
+
       - name: Debug SSH Connection
         run: |
           ssh-add -l
