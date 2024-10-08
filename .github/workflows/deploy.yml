@@ -35,13 +35,20 @@ jobs:
       - name: Install dependencies
         run: composer install --no-progress --no-suggest --prefer-dist --optimize-autoloader
 
+      - name: Ensure .env file
+        run: php -r "file_exists('.env') || copy('.env.testing', '.env');"
+
       - name: Generate application key
         id: generate_key
         run: |
           key=$(php artisan key:generate --show)
           echo "APP_KEY=$key" >> $GITHUB_ENV
+          echo "::set-output name=app_key::$key"
         env:
           APP_ENV: testing
+
+      - name: Debug APP_KEY
+        run: echo "APP_KEY=${{ env.APP_KEY }}"
 
       - name: Run migrations
         run: php artisan migrate --force
