@@ -97,12 +97,6 @@ jobs:
         uses: webfactory/ssh-agent@v0.5.3
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
-
-      - name: Verify SSH Key
-        run: |
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" | ssh-keygen -y -f /dev/stdin
-
       - name: Debug SSH Connection
         run: |
           ssh-add -l

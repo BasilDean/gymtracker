@@ -22,7 +22,7 @@ return new class extends Migration
             $table->timestamps();
 
             // Specify the length for the indexed columns
-            $table->index(['tokenable_type', 'tokenable_id'], 'tokenable_index', 191);
+            $table->index(['tokenable_type(191)', 'tokenable_id(191)'], 'tokenable_index');
         });
     }
 
