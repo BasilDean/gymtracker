@@ -17,13 +17,8 @@ return new class extends Migration {
             $table->string('token', 64)->unique();
             $table->text('abilities')->nullable();
             $table->timestamp('last_used_at')->nullable();
+            $table->timestamp('expires_at')->nullable();
             $table->timestamps();
-
-            // Drop the index if it exists
-            $table->dropIndex(['tokenable_type', 'tokenable_id']);
-
-            // Add the new index with prefix length
-            $table->index(['tokenable_type(191)', 'tokenable_id'], 'personal_access_tokens_tokenable_type_tokenable_id_index');
         });
     }
 
