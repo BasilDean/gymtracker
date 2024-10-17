@@ -22,8 +22,8 @@ return new class extends Migration {
             // Drop the index if it exists
             $table->dropIndex(['tokenable_type', 'tokenable_id']);
 
-            // Add the new index
-            $table->index(['tokenable_type', 'tokenable_id'], 'personal_access_tokens_tokenable_type_tokenable_id_index');
+            // Add the new index with prefix length
+            $table->index(['tokenable_type(191)', 'tokenable_id'], 'personal_access_tokens_tokenable_type_tokenable_id_index');
         });
     }
 
