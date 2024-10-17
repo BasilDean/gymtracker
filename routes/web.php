@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\LocaleController;
+use App\Http\Controllers\MenuController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RoleController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -25,9 +28,24 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::prefix('admin')->middleware(['auth', 'verified', 'role:admin'])->group(function () {
+    Route::get('/', function () {
+        return Inertia::render('Dashboard');
+    })->name('dashboard');
+
+    Route::prefix('menu')->group(function () {
+        Route::get('/', [MenuController::class, 'index'])->name('menu.index');
+    });
+
+    Route::prefix('roles')->group(function () {
+        Route::get('/', [RoleController::class, 'index'])->name('role.index');
+        Route::get('/create', [RoleController::class, 'create'])->name('role.create');
+        Route::post('/', [RoleController::class, 'store'])->name('role.store');
+        Route::get('/{name}', [RoleController::class, 'edit'])->name('role.edit');
+        Route::patch('/{id}', [RoleController::class, 'update'])->name('role.update');
+        Route::delete('/{id}', [RoleController::class, 'destroy'])->name('role.destroy');
+    });
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -35,4 +53,6 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+Route::get('locale/{locale}', [LocaleController::class, 'changeLocale'])->name('locale.change');
+
+require __DIR__ . '/auth.php';

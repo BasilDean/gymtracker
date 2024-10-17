@@ -15,10 +15,17 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
 
-         User::factory()->create([
-             'name' => 'Basil Dean',
-             'email' => 'vonavud@gmail.com',
-             'password' => 'vonavud@gmail.com',
-         ]);
+        User::factory()->create([
+            'name' => 'Basil Dean',
+            'email' => 'vonavud@gmail.com',
+            'password' => 'vonavud@gmail.com',
+        ]);
+        // TODO comment before pushing to production
+
+
+        $this->call(CreatePermissionsForRolesSeeder::class);
+        $this->call(CreateRolesSeeder::class);
     }
+
 }
+
