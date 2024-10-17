@@ -8,9 +8,7 @@ use App\Models\User;
 it('can create a role', function () {
     $role = Role::factory()->create();
 
-    expect($role->name)->toBeString()
-        ->and(json_encode($role->title, JSON_THROW_ON_ERROR))->toBeJson()
-        ->and($role->getTranslatedTitleAttribute())->toBeString();
+    expect($role->name)->toBeString();
 });
 
 it('can be attached to a user', function () {

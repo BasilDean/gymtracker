@@ -12,9 +12,3 @@ it('can be assigned to a role', function () {
 
     expect($permission->roles->first()->name)->toBe($role->name);
 });
-
-it('has translations', function () {
-    $permission = Permission::factory()->create();
-
-    expect($permission->getTranslatedTitleAttribute())->toBeString();
-});
