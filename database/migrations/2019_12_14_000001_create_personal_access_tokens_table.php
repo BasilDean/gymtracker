@@ -12,16 +12,18 @@ return new class extends Migration {
     {
         Schema::create('personal_access_tokens', function (Blueprint $table) {
             $table->id();
-            $table->morphs('tokenable', 191); // Specify length for tokenable_type
+            $table->morphs('tokenable');
             $table->string('name');
             $table->string('token', 64)->unique();
             $table->text('abilities')->nullable();
             $table->timestamp('last_used_at')->nullable();
-            $table->timestamp('expires_at')->nullable();
             $table->timestamps();
 
-            // Specify the length for the indexed columns
-            $table->index(['tokenable_type', 'tokenable_id'], 'tokenable_index');
+            // Drop the index if it exists
+            $table->dropIndex(['tokenable_type', 'tokenable_id']);
+
+            // Add the new index
+            $table->index(['tokenable_type', 'tokenable_id'], 'personal_access_tokens_tokenable_type_tokenable_id_index');
         });
     }
 
