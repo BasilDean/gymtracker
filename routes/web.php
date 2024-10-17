@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\LocaleController;
-use App\Http\Controllers\MenuController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
 use Illuminate\Foundation\Application;
@@ -33,9 +32,9 @@ Route::prefix('admin')->middleware(['auth', 'verified', 'role:admin'])->group(fu
         return Inertia::render('Dashboard');
     })->name('dashboard');
 
-    Route::prefix('menu')->group(function () {
-        Route::get('/', [MenuController::class, 'index'])->name('menu.index');
-    });
+//    Route::prefix('menu')->group(function () {
+//        Route::get('/', [MenuController::class, 'index'])->name('menu.index');
+//    });
 
     Route::prefix('roles')->group(function () {
         Route::get('/', [RoleController::class, 'index'])->name('role.index');
@@ -46,6 +45,7 @@ Route::prefix('admin')->middleware(['auth', 'verified', 'role:admin'])->group(fu
         Route::delete('/{id}', [RoleController::class, 'destroy'])->name('role.destroy');
     });
 });
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
