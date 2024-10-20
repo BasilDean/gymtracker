@@ -15,6 +15,7 @@ class RoleController extends Controller
 {
     public function index(): Response
     {
+        $this->authorize('viewAny', Role::class);
         $roles = Role::paginate(10);
         $roles->getCollection()->transform(function ($role) {
             $localeTitle = $role->getTranslation('title', app()->getLocale());
@@ -35,6 +36,7 @@ class RoleController extends Controller
 
     public function create(): Response
     {
+        $this->authorize('create', Role::class);
         $translations = $this->getTranslations();
         $permissions = Permission::paginate(100);
         $permissions->getCollection()->transform(function ($permission) {
@@ -48,6 +50,7 @@ class RoleController extends Controller
 
     public function store(RoleRequest $request): RedirectResponse
     {
+        $this->authorize('create', Role::class);
         $attributes = $request->validated();
         $name = Str::lower(Str::slug($attributes['title']['en']));
         $role = new Role();
@@ -62,6 +65,7 @@ class RoleController extends Controller
     public function edit($name): Response
     {
         $role = Role::select('id', 'name', 'title')->where('name', $name)->firstOrFail();
+        $this->authorize('view', $role);
         $role->permissionIds = $role->permissions->pluck('id');
         $permissions = Permission::paginate(100);
         $permissions->getCollection()->transform(function ($permission) {
@@ -69,7 +73,6 @@ class RoleController extends Controller
             $permission->locale_title = $localeTitle;
             return $permission;
         });
-
 
         $translations = $this->getTranslations();
 
@@ -79,9 +82,11 @@ class RoleController extends Controller
 
     public function update(RoleRequest $request, $id): RedirectResponse
     {
+        $role = Role::findOrFail($id);
+        $this->authorize('update', $role);
         $attributes = $request->validated();
         $name = Str::lower(Str::slug($attributes['title']['en']));
-        $role = Role::findOrFail($id);
+
         $role->fill($attributes);
         $role->name = $name;
         $role->save();
@@ -91,9 +96,12 @@ class RoleController extends Controller
         return redirect()->route('role.edit', $role->name)->with('success', $translations['role_updated']);
     }
 
-    public function destroy($id): void
+    public function destroy($id): RedirectResponse
     {
         $role = Role::findOrFail($id);
+        $this->authorize('delete', $role);
         $role->delete();
+        $translations = $this->getTranslations();
+        return redirect()->route('role.index')->with('success', $translations['role_deleted']);
     }
 }

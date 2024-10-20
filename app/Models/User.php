@@ -21,8 +21,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
-        'password',
-        'role_id'
+        'password'
     ];
 
     /**
@@ -48,5 +47,16 @@ class User extends Authenticatable
     public function roles(): BelongsToMany
     {
         return $this->belongsToMany(related: Role::class);
+    }
+
+    public function hasPermissionTo(string $permission): bool
+    {
+        $roles = $this->roles;
+        foreach ($roles as $role) {
+            if ($role->hasPermissionTo($permission)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -10,4 +10,5 @@ return [
     'permissions' => 'Права',
     'role_updated' => 'Роль успешно обновлена.',
     'role_created' => 'Роль успешно создана.',
+    'role_deleted' => 'Роль успешно удалена.',
 ];

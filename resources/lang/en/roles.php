@@ -10,4 +10,5 @@ return [
     'permissions' => 'Permissions',
     'role_updated' => 'Role updated successfully.',
     'role_created' => 'Role created successfully.',
+    'role_deleted' => 'Role deleted successfully.',
 ];

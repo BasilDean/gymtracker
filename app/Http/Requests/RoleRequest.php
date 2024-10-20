@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Auth;
 
 class RoleRequest extends FormRequest
 {
@@ -20,11 +19,8 @@ class RoleRequest extends FormRequest
 
     public function authorize(): bool
     {
-        foreach (Auth::user()->roles as $role) {
-            if ($role->hasPermissionTo('create_role')) {
-                return true;
-            }
-        }
-        return false;
+        // authorize if user is logged in and has view_dashboard permission
+
+        return auth()->check() && auth()->user()->hasPermissionTo('view_dashboard');
     }
 }
