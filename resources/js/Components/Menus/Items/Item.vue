@@ -12,7 +12,7 @@ const props = defineProps({
 });
 
 const translations_menus = inject('translations_menus');
-const item_type = inject('item_type');
+const item_type = 'menuItem';
 
 </script>
 
@@ -22,8 +22,7 @@ const item_type = inject('item_type');
             <p>{{ item.id }}</p>
             <div class="min-w-0 flex-auto">
                 <p class="text-sm font-semibold leading-6">{{ item.locale_title }}</p>
-                <p class="mt-1 truncate text-xs leading-5 text-gray-500">{{ translations_menus[item.type] }} /
-                    {{ translations_menus[item.placement] }}</p>
+                <p class="mt-1 truncate text-xs leading-5 text-gray-500">{{ item.url || item.route }}</p>
             </div>
         </div>
         <div class="hidden shrink-0 sm:flex sm:flex-col sm:items-end">

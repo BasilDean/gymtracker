@@ -15,6 +15,7 @@ const props = defineProps({
 const page = usePage();
 
 provide('item_type', 'menu');
+provide('translations_menus', props.translations_menus);
 
 provide('delete_item_confirm', props.translations_menus.delete_item_confirm)
 

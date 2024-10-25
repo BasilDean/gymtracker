@@ -29,6 +29,7 @@ class MenuController extends Controller
         $menus->getCollection()->transform(function ($menu) {
             return $this->translationService->transform($menu, 'title');
         });
+
         return Inertia::render('Menu/Index', ['menus' => $menus, 'translations_menus' => $this->getTranslations()]);
     }
 
@@ -58,8 +59,15 @@ class MenuController extends Controller
 
     public function edit($slug): Response
     {
-        $menu = Menu::where('slug', $slug)->firstOrFail();
+        $menu = Menu::where('slug', $slug)->with(['menuItems' => function ($query) {
+            $query->orderBy('order')->orderBy('id');
+        }])->firstOrFail();
         $this->authorize('update', $menu);
+
+
+        $menuItems = $menu->menuItems->transform(function ($menuItem) {
+            return $this->translationService->transform($menuItem, 'title');
+        });
         return Inertia::render('Menu/Edit', ['menu' => $menu, 'translations_menus' => $this->getTranslations(), 'menu_placements' => config('menu_placements')]);
     }
 

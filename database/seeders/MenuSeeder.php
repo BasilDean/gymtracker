@@ -10,8 +10,8 @@ class MenuSeeder extends Seeder
     public function run(): void
     {
         Menu::create([
-            'slug' => 'admin',
-            'title' => ['en' => 'Admin', 'es' => 'Administrador', 'ru' => 'Администратор'],
+            'slug' => 'admin_header',
+            'title' => ['en' => 'Admin header menu', 'es' => 'Menú de encabezado de administrador', 'ru' => 'Административное меню в шапке'],
             'type' => 'private',
             'placement' => 'header',
         ]);

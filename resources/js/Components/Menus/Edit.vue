@@ -6,6 +6,7 @@ import InputLabel from "@/Components/InputLabel.vue";
 import TextInput from "@/Components/TextInput.vue";
 import NavLinkBlank from "@/Components/NavLinkBlank.vue";
 import SelectInput from "@/Components/SelectInput.vue";
+import XList from "@/Components/Menus/Items/List.vue";
 
 const props = defineProps({
     menu_placements: {
@@ -20,7 +21,7 @@ const props = defineProps({
 
 const goBack = route('menu.index');
 const form = useForm({
-    id: props.item.id,
+    id: String(props.item.id),
     slug: props.item.slug,
     title: {
         en: props.item.title.en,
@@ -39,6 +40,7 @@ const create_menu = () => {
 
 <template>
     <Head :title="translations_menus.create"/>
+
     <form @submit.prevent="create_menu">
         <div class="space-y-2">
             <div class="border-b border-gray-900/10 pb-2">
@@ -96,6 +98,7 @@ const create_menu = () => {
                 <h2 class=" font-semibold leading-7 "></h2>
 
                 <div class="mt-10 grid gap-x-6 gap-y-8">
+                    <XList :items="item.menu_items" class="p-6"/>
                 </div>
             </div>
         </div>

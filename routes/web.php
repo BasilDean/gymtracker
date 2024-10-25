@@ -40,8 +40,15 @@ Route::prefix('admin')->middleware(['auth', 'verified', 'role:admin'])->group(fu
         Route::get('/{slug}', [MenuController::class, 'edit'])->name('menu.edit');
         Route::patch('/{id}', [MenuController::class, 'update'])->name('menu.update');
         Route::delete('/{id}', [MenuController::class, 'destroy'])->name('menu.destroy');
-    });
+        Route::prefix('item')->group(function () {
 
+            Route::get('/create', [MenuController::class, 'create'])->name('menuItem.create');
+            Route::post('/', [MenuController::class, 'store'])->name('menuItem.store');
+            Route::get('/{slug}', [MenuController::class, 'edit'])->name('menuItem.edit');
+            Route::patch('/{id}', [MenuController::class, 'update'])->name('menuItem.update');
+            Route::delete('/{id}', [MenuController::class, 'destroy'])->name('menuItem.destroy');
+        });
+    });
     Route::prefix('roles')->group(function () {
         Route::get('/', [RoleController::class, 'index'])->name('role.index');
         Route::get('/create', [RoleController::class, 'create'])->name('role.create');

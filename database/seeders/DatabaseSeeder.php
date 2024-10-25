@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
         // \App\Models\User::factory(10)->create();
 
         User::factory()->create([
-            'name' => 'Basil Dean',
+            'name' => 'Basil Dandelion',
             'email' => 'vonavud@gmail.com',
             'password' => 'vonavud@gmail.com',
         ]);
@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
         $this->call(CreateRolesSeeder::class);
         // TODO comment before pushing to production
         $this->call(MenuSeeder::class);
+        $this->call(MenuItemSeeder::class);
     }
 
 }

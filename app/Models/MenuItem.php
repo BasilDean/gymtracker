@@ -9,13 +9,20 @@ use Spatie\Translatable\HasTranslations;
 
 class MenuItem extends Model
 {
-    use HasFactory, hasTranslations;
+    use HasFactory, HasTranslations;
 
     protected $fillable = [
+        'slug',
         'title',
         'url',
         'route',
         'menu_id',
+    ];
+
+//    TODO add nesting to menuItems to make menu multi leveled
+
+    protected array $translatable = [
+        'title',
     ];
 
     protected $casts = [
