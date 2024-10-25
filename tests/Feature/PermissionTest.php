@@ -10,5 +10,5 @@ it('can be assigned to a role', function () {
 
     $role->permissions()->attach($permission);
 
-    expect($permission->roles->first()->name)->toBe($role->name);
+    expect($permission->roles->first()->slug)->toBe($role->slug);
 });

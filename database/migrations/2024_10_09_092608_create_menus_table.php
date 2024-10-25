@@ -9,9 +9,11 @@ return new class extends Migration {
     {
         Schema::create('menus', function (Blueprint $table) {
             $table->id();
+            $table->string('slug')->unique()->index();
             $table->json('title');
             $table->string('type');
             $table->string('placement');
+            $table->integer('order')->default(500);
             $table->timestamps();
         });
     }
@@ -20,4 +22,5 @@ return new class extends Migration {
     {
         Schema::dropIfExists('menus');
     }
+
 };

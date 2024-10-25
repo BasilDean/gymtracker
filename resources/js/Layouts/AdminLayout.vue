@@ -195,8 +195,6 @@ const showingNavigationDropdown = ref(false);
 
             <!-- Page Content -->
             <main>
-                <div class="text-white">
-                </div>
                 <slot/>
             </main>
         </div>

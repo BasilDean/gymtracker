@@ -1,15 +1,13 @@
 <script setup>
 
-import XListItem from '@/Components/ListItem.vue';
+import XListItem from '@/Components/Roles/ListItem.vue';
 
 const props = defineProps({
     items: {
-        type: Array,
+        type: Object,
         required: true,
     },
 });
-
-console.log(props.items);
 
 </script>
 

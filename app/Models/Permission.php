@@ -13,8 +13,12 @@ class Permission extends Model
 
     protected array $translatable = ['title'];
     protected $fillable = [
-        'name',
+        'slug',
         'title',
+    ];
+
+    protected $casts = [
+        'title' => 'array',
     ];
 
     public function roles(): BelongsToMany

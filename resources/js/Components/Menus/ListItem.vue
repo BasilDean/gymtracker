@@ -6,7 +6,7 @@ import {inject} from "vue";
 
 const props = defineProps({
     item: {
-        type: Array,
+        type: Object,
         required: true,
     },
 });
@@ -20,12 +20,12 @@ const item_type = inject('item_type');
         <div class="flex min-w-0 gap-x-4">
             <p>{{ item.id }}</p>
             <div class="min-w-0 flex-auto">
-                <p class="text-sm font-semibold leading-6">{{ item.locale_title }}</p>
+                <p class="text-sm font-semibold leading-6">{{ item.title.en }}</p>
             </div>
         </div>
         <div class="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
             <div class="mt-1 flex items-center gap-x-1.5">
-                <ButtonCreate :href="route(item_type + '.edit', item.name)">{{
+                <ButtonCreate :href="route(item_type + '.edit', item.slug)">{{
                         $page.props.translations.edit
                     }}
                 </ButtonCreate>

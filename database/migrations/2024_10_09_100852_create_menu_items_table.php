@@ -10,9 +10,11 @@ return new class extends Migration {
     {
         Schema::create('menu_items', function (Blueprint $table) {
             $table->id();
-            $table->json('title');
+            $table->string('slug')->unique()->index();
+            $table->json('name')->unique();
             $table->string('url')->nullable();
             $table->string('route')->nullable();
+            $table->string('order')->default(500);
             $table->foreignIdFor(Menu::class)->constrained('menus')->cascadeOnDelete();
             $table->timestamps();
         });

@@ -30,21 +30,21 @@ it('can restrict access to store roles', function () {
 });
 
 it('can restrict access to edit roles', function () {
-    $role = Role::create(['name' => 'admin', 'title' => ['en' => 'Admin', 'es' => 'Administrador']]);
+    $role = Role::create(['slug' => 'admin', 'title' => ['en' => 'Admin', 'es' => 'Administrador']]);
     $this->actingAs($this->user)
-        ->get(route('role.edit', $role->name))
+        ->get(route('role.edit', $role->slug))
         ->assertStatus(403);
 });
 
 it('can restrict access to update roles', function () {
-    $role = Role::create(['name' => 'admin', 'title' => ['en' => 'Admin', 'es' => 'Administrador']]);
+    $role = Role::create(['slug' => 'admin', 'title' => ['en' => 'Admin', 'es' => 'Administrador']]);
     $this->actingAs($this->user)
         ->patch(route('role.update', $role->id), [])
         ->assertStatus(403);
 });
 
 it('can restrict access to destroy roles', function () {
-    $role = Role::create(['name' => 'admin', 'title' => ['en' => 'Admin', 'es' => 'Administrador']]);
+    $role = Role::create(['slug' => 'admin', 'title' => ['en' => 'Admin', 'es' => 'Administrador']]);
     $this->actingAs($this->user)
         ->delete(route('role.destroy', $role->id))
         ->assertStatus(403);

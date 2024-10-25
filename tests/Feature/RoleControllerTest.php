@@ -10,9 +10,9 @@ uses(RefreshDatabase::class);
 
 it('can list roles', function () {
     $user = User::factory()->create();
-    $role = Role::create(['name' => 'admin', 'title' => ['en' => 'Admin', 'es' => 'Administrador']]);
+    $role = Role::create(['slug' => 'admin', 'title' => ['en' => 'Admin', 'es' => 'Administrador']]);
     $user->roles()->attach($role);
-    $permission = Permission::create(['name' => 'view_role', 'title' => ['en' => 'View Role', 'es' => 'Ver Rol']]);
+    $permission = Permission::create(['slug' => 'view_role', 'title' => ['en' => 'View Role', 'es' => 'Ver Rol']]);
     $role->permissions()->attach($permission);
     $this->actingAs($user);
 
@@ -27,9 +27,9 @@ it('can list roles', function () {
 
 it('can show create page', function () {
     $user = User::factory()->create();
-    $role = Role::create(['name' => 'admin', 'title' => ['en' => 'Admin', 'es' => 'Administrador']]);
+    $role = Role::create(['slug' => 'admin', 'title' => ['en' => 'Admin', 'es' => 'Administrador']]);
     $user->roles()->attach($role);
-    $permission = Permission::create(['name' => 'create_role', 'title' => ['en' => 'Create Role', 'es' => 'Crear Rol']]);
+    $permission = Permission::create(['slug' => 'create_role', 'title' => ['en' => 'Create Role', 'es' => 'Crear Rol']]);
     $role->permissions()->attach($permission);
     Permission::factory()->count(9)->create();
     // auth as user
@@ -46,11 +46,11 @@ it('can show create page', function () {
 
 it('can create a new role', function () {
     $user = User::factory()->create();
-    $role = Role::create(['name' => 'admin', 'title' => ['en' => 'Admin', 'es' => 'Administrador']]);
+    $role = Role::create(['slug' => 'admin', 'title' => ['en' => 'Admin', 'es' => 'Administrador']]);
     $user->roles()->attach($role);
-    $permission = Permission::create(['name' => 'create_role', 'title' => ['en' => 'Create Role', 'es' => 'Crear Rol']]);
+    $permission = Permission::create(['slug' => 'create_role', 'title' => ['en' => 'Create Role', 'es' => 'Crear Rol']]);
     $role->permissions()->attach($permission);
-    $permission = Permission::create(['name' => 'view_dashboard', 'title' => ['en' => 'View Dashboard', 'es' => 'Ver Dashboard']]);
+    $permission = Permission::create(['slug' => 'view_dashboard', 'title' => ['en' => 'View Dashboard', 'es' => 'Ver Dashboard']]);
     $role->permissions()->attach($permission);
 
     $permissions = Permission::factory()->count(8)->create();
@@ -62,24 +62,24 @@ it('can create a new role', function () {
         'permissions' => $permissions->pluck('id')->toArray()
     ]);
 
-    $createdRole = Role::where('name', 'new-role')->firstOrFail();
+    $createdRole = Role::where('slug', 'new-role')->firstOrFail();
 
-    $response->assertRedirect(route('role.edit', $createdRole->name))
+    $response->assertRedirect(route('role.edit', $createdRole->slug))
         ->assertSessionHas('success', 'Role created successfully.');
 
-    $this->assertDatabaseHas('roles', ['name' => 'new-role']);
+    $this->assertDatabaseHas('roles', ['slug' => 'new-role']);
     $this->assertDatabaseCount('permission_role', 10);
 });
 
 it('can open edit form for role', function () {
     $user = User::factory()->create();
-    $role = Role::create(['name' => 'admin', 'title' => ['en' => 'Admin', 'es' => 'Administrador']]);
+    $role = Role::create(['slug' => 'admin', 'title' => ['en' => 'Admin', 'es' => 'Administrador']]);
     $user->roles()->attach($role);
 
-    $permission = Permission::create(['name' => 'view_role', 'title' => ['en' => 'View Role', 'es' => 'Ver Rol']]);
+    $permission = Permission::create(['slug' => 'view_role', 'title' => ['en' => 'View Role', 'es' => 'Ver Rol']]);
     $role->permissions()->attach($permission);
 
-    $role = Role::create(['name' => 'new-role', 'title' => ['en' => 'New Role', 'es' => 'Nuevo Rol']]);
+    $role = Role::create(['slug' => 'new-role', 'title' => ['en' => 'New Role', 'es' => 'Nuevo Rol']]);
     $role->permissions()->attach($permission);
     $user->roles()->attach($role);
 
@@ -87,27 +87,27 @@ it('can open edit form for role', function () {
     // auth as user
     $this->actingAs($user);
 
-    $response = $this->get(route('role.edit', $role->name));
+    $response = $this->get(route('role.edit', $role->slug));
 
     $response->assertStatus(200)
         ->assertInertia(fn(Assert $page) => $page
             ->component('Roles/Edit')
-            ->has('role', 5)
+            ->has('role', 4)
             ->has('permissions.data', 10)
         );
 });
 
 it('can update role', function () {
     $user = User::factory()->create();
-    $role = Role::create(['name' => 'admin', 'title' => ['en' => 'Admin', 'es' => 'Administrador']]);
+    $role = Role::create(['slug' => 'admin', 'title' => ['en' => 'Admin', 'es' => 'Administrador']]);
     $user->roles()->attach($role);
 
-    $permission = Permission::create(['name' => 'update_role', 'title' => ['en' => 'Update Role', 'es' => 'Actualizar Rol']]);
+    $permission = Permission::create(['slug' => 'update_role', 'title' => ['en' => 'Update Role', 'es' => 'Actualizar Rol']]);
     $role->permissions()->attach($permission);
-    $permission = Permission::create(['name' => 'view_dashboard', 'title' => ['en' => 'View Dashboard', 'es' => 'Ver Dashboard']]);
+    $permission = Permission::create(['slug' => 'view_dashboard', 'title' => ['en' => 'View Dashboard', 'es' => 'Ver Dashboard']]);
     $role->permissions()->attach($permission);
 
-    $role = Role::create(['name' => 'new-role', 'title' => ['en' => 'New Role', 'es' => 'Nuevo Rol']]);
+    $role = Role::create(['slug' => 'new-role', 'title' => ['en' => 'New Role', 'es' => 'Nuevo Rol']]);
     $user->roles()->attach($role);
 
     $permissions = Permission::factory()->count(8)->create();
@@ -122,21 +122,21 @@ it('can update role', function () {
     $response->assertRedirect(route('role.edit', 'updated-role'))
         ->assertSessionHas('success', 'Role updated successfully.');
 
-    $this->assertDatabaseHas('roles', ['name' => 'updated-role']);
+    $this->assertDatabaseHas('roles', ['slug' => 'updated-role']);
     $this->assertDatabaseCount('permission_role', 10);
 });
 
 it('can delete role', function () {
     $user = User::factory()->create();
-    $role = Role::create(['name' => 'admin', 'title' => ['en' => 'Admin', 'es' => 'Administrador']]);
+    $role = Role::create(['slug' => 'admin', 'title' => ['en' => 'Admin', 'es' => 'Administrador']]);
     $user->roles()->attach($role);
 
-    $permission = Permission::create(['name' => 'delete_role', 'title' => ['en' => 'Delete Role', 'es' => 'Eliminar Rol']]);
+    $permission = Permission::create(['slug' => 'delete_role', 'title' => ['en' => 'Delete Role', 'es' => 'Eliminar Rol']]);
     $role->permissions()->attach($permission);
-    $permission = Permission::create(['name' => 'view_dashboard', 'title' => ['en' => 'View Dashboard', 'es' => 'Ver Dashboard']]);
+    $permission = Permission::create(['slug' => 'view_dashboard', 'title' => ['en' => 'View Dashboard', 'es' => 'Ver Dashboard']]);
     $role->permissions()->attach($permission);
 
-    $role = Role::create(['name' => 'new-role', 'title' => ['en' => 'New Role', 'es' => 'Nuevo Rol']]);
+    $role = Role::create(['slug' => 'new-role', 'title' => ['en' => 'New Role', 'es' => 'Nuevo Rol']]);
 
     // auth as user
     $this->actingAs($user);
@@ -146,6 +146,6 @@ it('can delete role', function () {
     $response->assertRedirect(route('role.index'))
         ->assertSessionHas('success', 'Role deleted successfully.');
 
-    $this->assertDatabaseMissing('roles', ['name' => 'new-role']);
+    $this->assertDatabaseMissing('roles', ['slug' => 'new-role']);
 });
 

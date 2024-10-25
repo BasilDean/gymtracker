@@ -35,13 +35,18 @@ Route::prefix('admin')->middleware(['auth', 'verified', 'role:admin'])->group(fu
 
     Route::prefix('menu')->group(function () {
         Route::get('/', [MenuController::class, 'index'])->name('menu.index');
+        Route::get('/create', [MenuController::class, 'create'])->name('menu.create');
+        Route::post('/', [MenuController::class, 'store'])->name('menu.store');
+        Route::get('/{slug}', [MenuController::class, 'edit'])->name('menu.edit');
+        Route::patch('/{id}', [MenuController::class, 'update'])->name('menu.update');
+        Route::delete('/{id}', [MenuController::class, 'destroy'])->name('menu.destroy');
     });
 
     Route::prefix('roles')->group(function () {
         Route::get('/', [RoleController::class, 'index'])->name('role.index');
         Route::get('/create', [RoleController::class, 'create'])->name('role.create');
         Route::post('/', [RoleController::class, 'store'])->name('role.store');
-        Route::get('/{name}', [RoleController::class, 'edit'])->name('role.edit');
+        Route::get('/{slug}', [RoleController::class, 'edit'])->name('role.edit');
         Route::patch('/{id}', [RoleController::class, 'update'])->name('role.update');
         Route::delete('/{id}', [RoleController::class, 'destroy'])->name('role.destroy');
     });

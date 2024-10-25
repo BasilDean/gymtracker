@@ -1,43 +1,47 @@
-<script lang="ts" setup>
+<script setup>
 import NavLinkBlank from "@/Components/NavLinkBlank.vue";
 import {inject, provide} from "vue";
-import {Head, useForm} from "@inertiajs/vue3";
+import {useForm} from "@inertiajs/vue3";
 import TextInput from "@/Components/TextInput.vue";
 import InputLabel from "@/Components/InputLabel.vue";
-import PermissionsList from "@/Components/PermissionsList.vue";
+import PermissionsList from "@/Components/Roles/PermissionsList.vue";
 import InputError from "@/Components/InputError.vue";
 
-const goBack = route('role.index');
-
-const permissions = inject('permissions');
-const form = useForm({
-    title: {
-        en: '',
-        es: '',
-        ru: '',
-    },
-    permissions: [],
+const props = defineProps({
+    role: Object,
 });
 
+const permissions = inject('permissions');
+const assignedPermissions = inject('assignedPermissions');
+const form = useForm({
+    id: String(props.role.id),
+    slug: props.role.slug,
+    title: {
+        en: props.role.title.en,
+        es: props.role.title.es,
+        ru: props.role.title.ru,
+    },
+    permissions: assignedPermissions,
+});
 provide('form', form);
 const translations_roles = inject('translations_roles');
 
-const create_role = () => {
-    form.post(route('role.store'));
+const update_role = () => {
+    form.patch(route('role.update', props.role.id));
 };
-
 </script>
 
 <template>
-    <Head :title="translations_roles.create"/>
-    <form @submit.prevent="create_role">
+    <form @submit.prevent="update_role">
         <div class="space-y-2">
             <div class="border-b border-gray-900/10 pb-2">
                 <div class="mt-2 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                    <TextInput v-model="form.id" name="id" type="hidden"/>
+                    <textInput v-model="form.slug" name="slug" type="hidden"/>
                     <div class="sm:col-span-2 sm:col-start-1">
                         <InputLabel :value="translations_roles.title_en"/>
                         <div class="mt-2">
-                            <TextInput id="title_en" v-model="form.title.en" class="w-full" name="title[en]"
+                            <TextInput id="title_en" v-model="form.title.en" class="w-full" name="title_en"
                                        type="text"/>
                             <InputError v-if="form.errors" :message="form.errors['title.en']"/>
                         </div>
@@ -47,7 +51,7 @@ const create_role = () => {
 
                         <InputLabel :value="translations_roles.title_es"/>
                         <div class="mt-2">
-                            <TextInput id="title_es" v-model="form.title.es" class="w-full" name="title[es]"
+                            <TextInput id="title_es" v-model="form.title.es" class="w-full" name="title_es"
                                        type="text"/>
                             <InputError :message="form.errors['title.es']"/>
                         </div>
@@ -56,7 +60,7 @@ const create_role = () => {
                     <div class="sm:col-span-2">
                         <InputLabel :value="translations_roles.title_ru"/>
                         <div class="mt-2">
-                            <TextInput id="title_ru" v-model="form.title.ru" class="w-full" name="title[ru]"
+                            <TextInput id="title_ru" v-model="form.title.ru" class="w-full" name="title_ru"
                                        type="text"/>
                             <InputError :message="form.errors['title.ru']"/>
                         </div>
@@ -73,14 +77,14 @@ const create_role = () => {
         </div>
 
         <div class="mt-6 flex items-center justify-end gap-x-6">
-            <NavLinkBlank :href="goBack"
+            <NavLinkBlank :href="route('role.index')"
                           class="rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
                           type="button">{{ $page.props.translations.cancel }}
             </NavLinkBlank>
             <button
                 class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 type="submit">
-                {{ $page.props.translations.create }}
+                {{ $page.props.translations.save }}
             </button>
         </div>
     </form>

@@ -13,7 +13,7 @@ class RoleFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->name(),
+            'slug' => $this->faker->name(),
             'title' => json_encode(['en' => $this->faker->jobTitle(), 'es' => $this->faker->jobTitle(), 'ru' => $this->faker->jobTitle()]),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),

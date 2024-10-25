@@ -11,4 +11,5 @@ return [
     'role_updated' => 'Role updated successfully.',
     'role_created' => 'Role created successfully.',
     'role_deleted' => 'Role deleted successfully.',
+    'delete_item_confirm' => 'Are you sure you want to delete this item?',
 ];

@@ -15,8 +15,13 @@ class Role extends Model
     public array $translatable = ['title'];
 
     protected $fillable = [
-        'name',
+        'slug',
         'title',
+        'order',
+    ];
+
+    protected $casts = [
+        'title' => 'array',
     ];
 
     public function users(): BelongsToMany
@@ -26,13 +31,13 @@ class Role extends Model
 
     public function permissions(): BelongsToMany
     {
-        return $this->BelongsToMany(related: Permission::class);
+        return $this->belongsToMany(related: Permission::class);
     }
 
     public function hasPermissionTo($permission): bool
     {
         if (is_string($permission)) {
-            return $this->permissions->contains('name', $permission);
+            return $this->permissions->contains('slug', $permission);
         }
 
         return $this->permissions->contains($permission);

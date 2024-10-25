@@ -1,27 +1,22 @@
 <script setup>
 import {Head, usePage} from '@inertiajs/vue3';
+import XList from '@/Components/Menus/List.vue';
 import AdminLayout from "@/Layouts/AdminLayout.vue";
 import {computed, provide} from "vue";
-import RoleEdit from "@/Components/Roles/RoleEdit.vue";
-import Modal from "@/Components/Modal.vue";
-import SecondaryButton from "@/Components/SecondaryButton.vue";
 import ButtonCreate from "@/Components/ButtonCreate.vue";
+import SecondaryButton from "@/Components/SecondaryButton.vue";
+import Modal from "@/Components/Modal.vue";
 
 const props = defineProps({
-    role: Object,
-    translations_roles: Object,
-    assignedPermissions: Array,
+    menus: Object,
+    translations_menus: Object,
 });
 
 const page = usePage();
 
-provide('assignedPermissions', props.role.permissionIds);
+provide('item_type', 'menu');
 
-provide('item_type', 'role');
-const {props: pageProps} = usePage();
-const permissions = pageProps.permissions;
-provide('permissions', permissions);
-provide('translations_roles', props.translations_roles);
+provide('delete_item_confirm', props.translations_menus.delete_item_confirm)
 
 const showModal = computed(() => {
     return page.props.flash.success !== null;
@@ -30,23 +25,23 @@ const showModal = computed(() => {
 const closeModal = () => {
     page.props.flash.success = null;
 };
+
 </script>
 
 <template>
-    <Head :title="translations_roles.edit"/>
+    <Head title="Menus"/>
 
     <AdminLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                {{ translations_roles.edit }}</h2>
+            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">{{
+                    translations_menus.title
+                }}</h2>
             <ButtonCreate>{{ $page.props.translations.create }}</ButtonCreate>
         </template>
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6 text-white">
-                        <RoleEdit :role="role"></RoleEdit>
-                    </div>
+                    <XList :items="menus" class="p-6"/>
                 </div>
             </div>
         </div>

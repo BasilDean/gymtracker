@@ -4,7 +4,7 @@
     </ul>
 </template>
 <script setup>
-import PermissionItem from "@/Components/PermissionItem.vue";
+import PermissionItem from "@/Components/Roles/PermissionItem.vue";
 
 defineProps({
     permissions: {

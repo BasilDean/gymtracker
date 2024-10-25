@@ -10,7 +10,7 @@ class RoleRequest extends FormRequest
     {
         $roleId = $this->route('id');
         return [
-            'title' => 'required|array',
+            'title' => 'required',
             'title.en' => 'required|string|max:255|unique:roles,title->en' . $roleId,
             'title.*' => 'required|string|max:255',
             'permissions' => 'array',

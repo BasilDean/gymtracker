@@ -11,6 +11,7 @@ const props = defineProps({
     },
 });
 
+const delete_item_confirm = inject('delete_item_confirm');
 
 const item_type = inject('item_type');
 const deleteRoute = (id) => {
@@ -19,7 +20,7 @@ const deleteRoute = (id) => {
 
 const form = useForm({});
 const deleteItem = (id) => {
-    if (confirm('Are you sure you want to delete this item?')) {
+    if (confirm(delete_item_confirm)) {
         form.delete(deleteRoute(id));
     }
 };

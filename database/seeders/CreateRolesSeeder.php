@@ -12,18 +12,18 @@ class CreateRolesSeeder extends Seeder
     public function run(): void
     {
         $roles = [
-            ['name' => 'admin', "title" => ['en' => 'Admin', 'es' => 'Administrador', 'ru' => 'Администратор']],
-            ['name' => 'manager', "title" => ['en' => 'Manager', 'es' => 'Gerente', 'ru' => 'Менеджер']],
-            ['name' => 'user', "title" => ['en' => 'User', 'es' => 'Usuario', 'ru' => 'Пользователь']]
+            ['slug' => 'admin', "title" => ['en' => 'Admin', 'es' => 'Administrador', 'ru' => 'Администратор']],
+            ['slug' => 'manager', "title" => ['en' => 'Manager', 'es' => 'Gerente', 'ru' => 'Менеджер']],
+            ['slug' => 'user', "title" => ['en' => 'User', 'es' => 'Usuario', 'ru' => 'Пользователь']]
         ];
         foreach ($roles as $role) {
             Role::create([
-                'name' => $role['name'],
+                'slug' => $role['slug'],
                 'title' => $role['title'],
             ]);
         }
         // for admin add all permissions
-        $admin = Role::where('id', '1')->first();
+        $admin = Role::where('slug', 'admin')->first();
         $permissions = Permission::all();
         $admin->permissions()->attach($permissions);
 
